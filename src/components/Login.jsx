@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { X, User, Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { X, User, Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Card, Button, FlexContainer, Title } from '../styles/components';
+import { auth, googleProvider } from '../firebaseConfig';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 const LoginModal = styled.div`
   position: fixed;
@@ -176,9 +178,91 @@ const SwitchText = styled.p`
   }
 `;
 
+const Divider = styled.div`
+  display: flex;
+  align-items: center;
+  margin: ${props => props.theme.spacing.lg} 0;
+  
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(16, 185, 129, 0.2);
+  }
+  
+  span {
+    padding: 0 ${props => props.theme.spacing.md};
+    color: #718096;
+    font-size: 0.9rem;
+  }
+`;
+
+const GoogleButton = styled.button`
+  width: 100%;
+  padding: ${props => props.theme.spacing.md};
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: white;
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${props => props.theme.spacing.sm};
+  margin-bottom: ${props => props.theme.spacing.md};
+  
+  &:hover {
+    border-color: ${props => props.theme.colors.primary.main};
+    background: rgba(16, 185, 129, 0.05);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+const GoogleIcon = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
+const ErrorMessage = styled.div`
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing.md};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  color: #dc2626;
+  font-size: 0.9rem;
+`;
+
+const LoadingSpinner = styled.div`
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 2px solid white;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
 const Login = ({ isOpen, onClose, onSwitchToSignUp, onSuccess }) => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -194,19 +278,77 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp, onSuccess }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Mock login - in real app, validate credentials here
-    if (formData.email && formData.password) {
-      const mockUser = {
-        id: 1,
-        name: formData.email.split('@')[0],
-        email: formData.email,
-        joinDate: new Date().toISOString(),
-        analysisCount: Math.floor(Math.random() * 50) + 1
+    setLoading(true);
+    setError('');
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      const user = userCredential.user;
+      
+      const userData = {
+        id: user.uid,
+        name: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        photoURL: user.photoURL,
+        joinDate: user.metadata.creationTime,
+        analysisCount: Math.floor(Math.random() * 50) + 1,
+        isFirebaseUser: true
       };
-      onSuccess(mockUser);
-      onClose();
+      
+      onSuccess(userData);
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(getErrorMessage(error.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      
+      const userData = {
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        joinDate: user.metadata.creationTime,
+        analysisCount: Math.floor(Math.random() * 50) + 1,
+        isFirebaseUser: true
+      };
+      
+      onSuccess(userData);
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      setError(getErrorMessage(error.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getErrorMessage = (errorCode) => {
+    switch (errorCode) {
+      case 'auth/user-not-found':
+        return 'No account found with this email address.';
+      case 'auth/wrong-password':
+        return 'Incorrect password. Please try again.';
+      case 'auth/invalid-email':
+        return 'Invalid email address format.';
+      case 'auth/user-disabled':
+        return 'This account has been disabled.';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later.';
+      case 'auth/popup-closed-by-user':
+        return 'Sign-in was cancelled.';
+      default:
+        return 'An error occurred during sign-in. Please try again.';
     }
   };
 
@@ -226,6 +368,31 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp, onSuccess }) => {
         </LoginHeader>
 
         <LoginBody>
+          {error && (
+            <ErrorMessage>
+              <AlertCircle size={18} />
+              {error}
+            </ErrorMessage>
+          )}
+
+          <GoogleButton onClick={handleGoogleSignIn} disabled={loading}>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+            )}
+            Continue with Google
+          </GoogleButton>
+
+          <Divider>
+            <span>or</span>
+          </Divider>
+
           <form onSubmit={handleSubmit}>
             <FormGroup>
               <Label htmlFor="email">Email Address</Label>
@@ -241,6 +408,7 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp, onSuccess }) => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
+                  disabled={loading}
                 />
               </InputContainer>
             </FormGroup>
@@ -259,18 +427,20 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp, onSuccess }) => {
                   value={formData.password}
                   onChange={handleInputChange}
                   required
+                  disabled={loading}
                 />
                 <PasswordToggle
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  disabled={loading}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </PasswordToggle>
               </InputContainer>
             </FormGroup>
 
-            <SubmitButton type="submit">
-              Sign In
+            <SubmitButton type="submit" disabled={loading}>
+              {loading ? <LoadingSpinner /> : 'Sign In'}
             </SubmitButton>
           </form>
 

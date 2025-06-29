@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { X, User, Mail, Calendar, Settings, LogOut } from 'lucide-react';
 import { Card, Button, FlexContainer, Title, Text } from '../styles/components';
+import { auth } from '../firebaseConfig';
+import { signOut } from 'firebase/auth';
 
 const ProfileModal = styled.div`
   position: fixed;
