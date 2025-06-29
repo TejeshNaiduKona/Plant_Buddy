@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">
+  <defs>
+    <radialGradient id="grapeGrad" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#581c87;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="rotGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#1f2937;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Grape cluster -->
+  <ellipse cx="100" cy="40" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="85" cy="55" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="115" cy="55" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="75" cy="70" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="100" cy="70" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="125" cy="70" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="85" cy="85" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="115" cy="85" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="70" cy="100" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="100" cy="100" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="130" cy="100" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="85" cy="115" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="115" cy="115" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  <ellipse cx="100" cy="130" rx="12" ry="15" fill="url(#grapeGrad)"/>
+  
+  <!-- Black rot patches -->
+  <ellipse cx="115" cy="55" rx="8" ry="10" fill="url(#rotGrad)"/>
+  <ellipse cx="125" cy="70" rx="10" ry="12" fill="url(#rotGrad)"/>
+  <ellipse cx="115" cy="85" rx="9" ry="11" fill="url(#rotGrad)"/>
+  <ellipse cx="130" cy="100" rx="11" ry="13" fill="url(#rotGrad)"/>
+  <ellipse cx="115" cy="115" rx="7" ry="9" fill="url(#rotGrad)"/>
+  
+  <!-- Stem -->
+  <rect x="98" y="20" width="4" height="20" fill="#065f46"/>
+</svg>

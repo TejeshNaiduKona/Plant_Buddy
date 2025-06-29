@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">
+  <defs>
+    <linearGradient id="beanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15803d;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="rustGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:0.7" />
+      <stop offset="70%" style="stop-color:#ea580c;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#9a3412;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Bean plant leaves -->
+  <ellipse cx="60" cy="60" rx="25" ry="35" fill="url(#beanGrad)" transform="rotate(-20 60 60)"/>
+  <ellipse cx="140" cy="60" rx="25" ry="35" fill="url(#beanGrad)" transform="rotate(20 140 60)"/>
+  <ellipse cx="100" cy="90" rx="30" ry="40" fill="url(#beanGrad)"/>
+  
+  <!-- Leaf veins -->
+  <path d="M60 35 Q60 60, 60 85" stroke="#15803d" stroke-width="2" opacity="0.6" transform="rotate(-20 60 60)"/>
+  <path d="M140 35 Q140 60, 140 85" stroke="#15803d" stroke-width="2" opacity="0.6" transform="rotate(20 140 60)"/>
+  <path d="M100 60 L100 120" stroke="#15803d" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Rust pustules -->
+  <circle cx="55" cy="50" r="3" fill="url(#rustGrad)"/>
+  <circle cx="65" cy="65" r="4" fill="url(#rustGrad)"/>
+  <circle cx="50" cy="75" r="2" fill="url(#rustGrad)"/>
+  
+  <circle cx="145" cy="45" r="3" fill="url(#rustGrad)"/>
+  <circle cx="135" cy="70" r="4" fill="url(#rustGrad)"/>
+  <circle cx="150" cy="80" r="2" fill="url(#rustGrad)"/>
+  
+  <circle cx="90" cy="80" r="5" fill="url(#rustGrad)"/>
+  <circle cx="110" cy="95" r="4" fill="url(#rustGrad)"/>
+  <circle cx="105" cy="110" r="3" fill="url(#rustGrad)"/>
+  <circle cx="85" cy="105" r="2" fill="url(#rustGrad)"/>
+  
+  <!-- Additional small rust spots -->
+  <circle cx="58" cy="68" r="1.5" fill="#9a3412"/>
+  <circle cx="138" cy="58" r="1.5" fill="#9a3412"/>
+  <circle cx="95" cy="100" r="1.5" fill="#9a3412"/>
+</svg>
