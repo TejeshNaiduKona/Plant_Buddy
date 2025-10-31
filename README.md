@@ -130,7 +130,6 @@ src/
 
 - Chrome 70+
 - Firefox 65+
-- Safari 12+
 - Edge 79+
 
 ## Contributing
