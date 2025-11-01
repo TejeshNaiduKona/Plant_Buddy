@@ -152,7 +152,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Community features
 - Export analysis reports
 - Offline mode support
-
 ---
 
 Built with ❤️ for plant lovers everywhere+ Vite
