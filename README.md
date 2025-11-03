@@ -129,7 +129,6 @@ src/
 ## Browser Compatibility
 
 - Chrome 70+
-- Firefox 65+
 
 ## Contributing
 
