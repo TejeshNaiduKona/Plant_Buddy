@@ -126,7 +126,7 @@ src/
 - Touch-friendly interface
 - Smooth animations and transitions
 
-## Browser Compatibility
+## Browser Compatibility 
 
 - Chrome 70+
 
