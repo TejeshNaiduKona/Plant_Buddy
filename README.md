@@ -2,7 +2,7 @@
 
 An AI-powered plant disease detection webapp built with React. Detect plant diseases quickly and accurately using advanced AI technology through camera capture or image upload.
 
-## Features 
+## Features
 
 - 📷 **Real-time Camera Scanning** - Use your device camera to capture plant images
 - 📁 **Image Upload** - Upload existing plant photos from your device
