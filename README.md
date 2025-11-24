@@ -1,5 +1,5 @@
 # Plant Buddy 🌿
-
+ 
 An AI-powered plant disease detection webapp built with React. Detect plant diseases quickly and accurately using advanced AI technology through camera capture or image upload.
 
 ## Features
